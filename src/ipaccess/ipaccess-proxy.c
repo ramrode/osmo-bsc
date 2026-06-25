@@ -583,6 +583,12 @@ struct msgb *ipaccess_proxy_read_msg(struct osmo_fd *bfd, int *error)
 	/* then read the length as specified in header */
 	msg->l2h = msg->data + sizeof(*hh);
 	len = ntohs(hh->len);
+	if (len > msgb_tailroom(msg)) {
+		LOGP(DLINP, LOGL_ERROR, "Oversized IPA frame: len %d > tailroom %d\n", len, msgb_tailroom(msg));
+		msgb_free(msg);
+		*error = -EIO;
+		return NULL;
+	}
 	ret = recv(bfd->fd, msg->l2h, len, 0);
 	if (ret < len) {
 		LOGP(DLINP, LOGL_ERROR, "short read!\n");
