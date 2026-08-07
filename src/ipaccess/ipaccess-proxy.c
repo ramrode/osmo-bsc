@@ -576,6 +576,16 @@ struct msgb *ipaccess_proxy_read_msg(struct osmo_fd *bfd, int *error)
 		msgb_free(msg);
 		*error = ret;
 		return NULL;
+	} else if (ret < sizeof(*hh)) {
+		/* A short (split) IPA header would leave msg->l2h (msg->data +
+		 * sizeof(*hh)) ahead of msg->tail, while the frame length below is
+		 * validated against msgb_tailroom() measured from msg->tail; the
+		 * body recv() could then write up to sizeof(*hh) - ret bytes past
+		 * the buffer. Reject it, like the other IPA read paths do. */
+		LOGP(DLINP, LOGL_ERROR, "short read of IPA header (%d)\n", ret);
+		msgb_free(msg);
+		*error = -EIO;
+		return NULL;
 	}
 
 	msgb_put(msg, ret);
