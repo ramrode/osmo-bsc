@@ -1,3 +1,59 @@
+osmo-bsc (1.15.0) unstable; urgency=medium
+
+  [ Mychaela N. Falconia ]
+  * MGW control: migrate to new API for codecs and payload types
+  * MGW control: migrate to new API for fmtp
+  * E1: add support for AMR in TW-TS-006 enhanced RTP format
+  * E1: add support for compressed CSD (TW-TS-007)
+  * vty: rm misleading warnings about DTX on E1 BTS
+  * nokia: add support for Flexi Multiradio
+  * nokia vty: change help strings away from "*Site"
+  * nokia skip-reset: make consistent with other vty settings
+  * nokia: make Rx diversity configurable
+  * nokia bts-reset-timer: raise the maximum to 300 s
+  * nokia: respond to BTS_COMMISS_TEST_REQ
+  * rsl: don't send legacy Chan Ident IE for Nokia BTS
+  * nokia cosmetic: add bts_is_insite() function
+  * nokia cosmetic: factor out BTS_CONF_COMPL handling
+  * Nokia Flexi Multiradio: reset non-BCCH TRX
+  * gsm_set_bts_type(): fix switch statement
+  * vty: update help string for nokia_site model
+  * nokia: rename vty settings, drop _site
+
+  [ Pau Espin Pedrol ]
+  * ipaccess-config-e1-driver: Make sure struct input_signal_data is zero initialized
+  * Avoid accessing struct log_target members directly
+  * Lb: Handle SCCP N-NOTICE.ind
+  * Lb: Handle N-PCSTATE.ind
+  * assignment_fsm: Fix use-after-free of lchan->conn
+
+  [ Csaba Sipos ]
+  * nokia_site: Add new BTS types to the list
+  * nokia_site: Change the LAPD N200 counter for RSL
+
+  [ Vadim Yanitskiy ]
+  * bssap: mark some pointers as const
+  * bssap: use LOGPFSML in bssmap_handle_assignm_req()
+  * bssap: use LOGPFSML in bssmap_handle_ass_req_tp_codec_list()
+  * ipaccess: fix buffer overread in ipacc_parse_supp_flags()
+  * ipaccess: store Supported Features IE to the MO state
+  * assignment_fsm: pass lchan to lchan_type_compat_with_mode()
+  * assignment_fsm: check ipaccess channel mode support
+  * lchan_fsm: ignore late lchan_rtp_fsm events
+  * lchan_fsm: don't mark lchan as BORKEN on unsupported mode NACK
+  * handover_fsm: fix send_handover_performed() using wrong lchan
+  * handover_fsm: send_handover_performed(): check lchan != NULL
+  * assignment_fsm: ipacc_chan_mode_supported(): log unsupported chan_mode
+
+  [ Oliver Smith ]
+  * Cosmetic: bts_nokia_site: fix comment formatting
+
+  [ n0k0 ]
+  * ipaccess-proxy: reject oversized IPA frame length
+  * ipaccess-proxy: reject short IPA header
+
+ -- Pau Espin Pedrol <pespin@sysmocom.de>  Thu, 20 Aug 2026 13:08:07 +0200
+
 osmo-bsc (1.14.0) unstable; urgency=medium
 
   [ csaba.sipos ]
