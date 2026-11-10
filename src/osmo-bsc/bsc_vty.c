@@ -2731,6 +2731,9 @@ static int config_write_bsc(struct vty *vty)
 		vty_out(vty, " bts-setup-ramping-step-interval %d%s",
 			bsc_gsmnet->bts_setup_ramp.step_interval, VTY_NEWLINE);
 
+	if (bsc_gsmnet->mgw.indicate_side)
+		vty_out(vty, " mgw indicate-side%s", VTY_NEWLINE);
+
 	return CMD_SUCCESS;
 }
 
@@ -3214,6 +3217,28 @@ DEFUN_ATTR(cfg_bsc_bts_ramping_step_size,
 	struct gsm_network *net = gsmnet_from_vty(vty);
 	int seconds = atoi(argv[0]);
 	bts_setup_ramp_set_step_size(net, seconds);
+	return CMD_SUCCESS;
+}
+
+DEFUN_USRATTR(cfg_bsc_mgw_side,
+	      cfg_bsc_mgw_side_cmd,
+	      X(BSC_VTY_ATTR_NEW_LCHAN),
+	      "mgw indicate-side",
+	      MGCP_CLIENT_MGW_STR
+	      "Send X-Side extension parameter with CRCX commands\n")
+{
+	bsc_gsmnet->mgw.indicate_side = true;
+	return CMD_SUCCESS;
+}
+
+DEFUN_USRATTR(cfg_bsc_no_mgw_side,
+	      cfg_bsc_no_mgw_side_cmd,
+	      X(BSC_VTY_ATTR_NEW_LCHAN),
+	      "no mgw indicate-side",
+	      NO_STR MGCP_CLIENT_MGW_STR
+	      "Send X-Side extension parameter with CRCX commands\n")
+{
+	bsc_gsmnet->mgw.indicate_side = false;
 	return CMD_SUCCESS;
 }
 
@@ -3731,6 +3756,8 @@ int bsc_vty_init(struct gsm_network *network)
 	install_element(BSC_NODE, &cfg_bsc_no_bts_setup_ramping_cmd);
 	install_element(BSC_NODE, &cfg_bsc_bts_setup_ramping_step_size_cmd);
 	install_element(BSC_NODE, &cfg_bsc_bts_setup_ramping_step_interval_cmd);
+	install_element(BSC_NODE, &cfg_bsc_mgw_side_cmd);
+	install_element(BSC_NODE, &cfg_bsc_no_mgw_side_cmd);
 
 	install_node(&msc_node, config_write_msc);
 	install_element(MSC_NODE, &cfg_net_msc_ncc_cmd);

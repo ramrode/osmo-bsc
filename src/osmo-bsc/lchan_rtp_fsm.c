@@ -196,6 +196,9 @@ static void lchan_rtp_fsm_wait_mgw_endpoint_available_onenter(struct osmo_fsm_in
 		break;
 	}
 
+	if (bsc_gsmnet->mgw.indicate_side)
+		OSMO_STRLCPY_ARRAY(crcx_info.x_side, "Abis");
+
 	osmo_mgcpc_ep_ci_request(lchan->mgw_endpoint_ci_bts, MGCP_VERB_CRCX, &crcx_info,
 				fi, LCHAN_RTP_EV_MGW_ENDPOINT_AVAILABLE, LCHAN_RTP_EV_MGW_ENDPOINT_ERROR,
 				0);

@@ -1079,6 +1079,10 @@ struct gsm_network {
 
 		/* Timer definitions, the same for all MGW pool members */
 		struct osmo_tdef *tdefs;
+
+		/* Should we send X-Side extension parameter line to our
+		 * attached MGW, telling it which CRCX is for A vs Abis? */
+		bool indicate_side;
 	} mgw;
 
 	/* Remote BSS resolution sevice (CTRL iface) */

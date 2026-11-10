@@ -842,8 +842,11 @@ bool gscon_connect_mgw_to_msc(struct gsm_subscriber_connection *conn,
 		}
 
 		verb = MGCP_VERB_MDCX;
-	} else
+	} else {
 		verb = MGCP_VERB_CRCX;
+		if (bsc_gsmnet->mgw.indicate_side)
+			OSMO_STRLCPY_ARRAY(mgw_info.x_side, "AoIP");
+	}
 
 	gscon_ensure_mgw_endpoint(conn, for_lchan->activate.info.msc_assigned_cic, for_lchan);
 
